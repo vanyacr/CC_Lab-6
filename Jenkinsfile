@@ -17,8 +17,7 @@ pipeline {
                 docker run -d --name backend1 --network app-network backend-app
                 docker run -d --name backend2 --network app-network backend-app
                 '''
-                // Increase this to 5 seconds to ensure backends are fully up
-                sleep 5
+                sleep 5 // Give them time to fully register on the network [cite: 762]
             }
         }
         stage('Deploy NGINX Load Balancer') {
