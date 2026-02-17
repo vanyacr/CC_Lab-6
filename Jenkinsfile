@@ -17,6 +17,8 @@ pipeline {
                 docker run -d --name backend1 --network app-network backend-app
                 docker run -d --name backend2 --network app-network backend-app
                 '''
+                // Put the sleep here to let backends start [cite: 762]
+                sleep 3 
             }
         }
         stage('Deploy NGINX Load Balancer') {
@@ -29,7 +31,10 @@ pipeline {
                   --network app-network \
                   -p 80:80 \
                   nginx
-                
+                '''
+                // Put a sleep here before copying config [cite: 763]
+                sleep 2 
+                sh '''
                 docker cp CC_LAB-6/nginx/default.conf nginx-lb:/etc/nginx/conf.d/default.conf
                 docker exec nginx-lb nginx -s reload
                 '''
@@ -38,10 +43,10 @@ pipeline {
     }
     post {
         success {
-            echo 'Pipeline executed successfully. NGINX load balancer is running.'
+            echo 'Pipeline executed successfully. NGINX load balancer is running.' [cite: 10]
         }
         failure {
-            echo 'Pipeline failed. Check console logs for errors.'
+            echo 'Pipeline failed. Check console logs for errors.' [cite: 11]
         }
     }
 }
