@@ -17,7 +17,6 @@ pipeline {
                 docker run -d --name backend1 --network app-network backend-app
                 docker run -d --name backend2 --network app-network backend-app
                 '''
-                // Put the sleep here to let backends start [cite: 762]
                 sleep 3 
             }
         }
@@ -32,7 +31,6 @@ pipeline {
                   -p 80:80 \
                   nginx
                 '''
-                // Put a sleep here before copying config [cite: 763]
                 sleep 2 
                 sh '''
                 docker cp CC_LAB-6/nginx/default.conf nginx-lb:/etc/nginx/conf.d/default.conf
